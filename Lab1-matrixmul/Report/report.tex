@@ -65,9 +65,11 @@ The \texttt{.tgz} file should contain all the files in the \texttt{Lab1-matrixmu
 
 \item How many times is each element of the input matrices loaded during the execution of the kernel?
 
+\subitem Either $3$ or $4$. Each element is copied into `shared' from the device memory and accessed by each thread. Each thread takes in two of the inputs and returns an output. 
 
 \item What is the memory-access to floating-point computation ratio in each thread?  Consider a multiply and addition as separate operations, and ignore the storing of the result.  Only global memory loads should be counted towards your off-chip bandwidth
 
+\subitem 
 
 \end{enumerate}
 
