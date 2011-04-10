@@ -1,75 +1,37 @@
-\documentclass[11pt,oneside]{article}
-\usepackage{geometry}			% See geometry.pdf to learn the layout options.
-								% There are lots.
-								
-\geometry{letterpaper}			% ... or a4paper or a5paper or ... 
-%\geometry{landscape}			% Activate for rotated page geometry
-%\usepackage[parfill]{parskip}	% Activate to begin paragraphs with an empty
-								% line rather than an indent
-
-\usepackage{ifpdf}
-\usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage[utf8]{inputenc}
-
-% Definitions
-\def\myauthor{Author}
-\def\mytitle{Title}
-\def\mycopyright{\myauthor}
-\def\mykeywords{}
-\def\mybibliostyle{plain}
-\def\mybibliocommand{}
-\def\mysubtitle{}
-
-
-
-%
-%	PDF Stuff
-%
-
-\ifpdf
-  \pdfoutput=1
-  \usepackage[
-  	plainpages=false,
-  	pdfpagelabels,
-  	bookmarksnumbered,
-  	pdftitle={\mytitle},
-  	pagebackref,
-  	pdfauthor={\myauthor},
-  	pdfkeywords={\mykeywords}
-  	]{hyperref}
-  \usepackage{memhfixc}
-\fi
-
-
-% Title Information
-\title{\mytitle \\ \mysubtitle}
-\author{\myauthor}
-
+\documentclass[12pt]{article}
+\newcommand{\MyFullName}{Jeff Farris, Jeremy Lavergne, Alex Padgett, Jon Wedaman}
+\newcommand{\MyLastName}{Farris, Lavergne, Padgett, Wedaman}
+\RequirePackage{macroNorm}
+\title{ CS668 Parallel Computing - Spring 2011 \\ Lab \#1: Matrix Multiplication}
+\author{\MyFullName}
+\date{Due April 12, 2011}
 \begin{document}
-
-
-% Title Page
-
 \maketitle
+\thispagestyle{empty}
 
-% Copyright Page
-\textcopyright{} \mycopyright
+Your submission will be graded on the following parameters.
+\begin{itemize}
+\item Demo/knowledge: 25\%
+\begin{itemize}
+\item Produces correct result output file for our test inputs.
+\end{itemize}
+\item Functionality:  40\%
+\begin{itemize}
+\item Correct usage of CUDA library calls and C extensions.
+\item Correct usage of thread id's in matrix computation.
+\end{itemize}
+\item Report: 35\%
+\begin{itemize}
+\item Answer to question 1: 15\%, answer to question 2: 20\%
+\end{itemize}
+\end{itemize}
 
-%
-% Main Content
-%
-
-
-% Layout settings
-\setlength{\parindent}{1em}
-
-\section{CS668 Parallel Computing - Spring 2011}
-\label{cs668parallelcomputing-spring2011}
+\setcounter{page}{0}
+\newpage
 
 \subsection{Lab \#1: Matrix Multiplication}
-\label{lab1:matrixmultiplication}
 
+\begin{comment}
 \begin{enumerate}
 
 \item Unzip \texttt{Lab1-matrixmul.zip} into your \texttt{sdk/projects} directory
@@ -100,6 +62,7 @@
 \item To submit your solution, upload to Blackboard a zipped file containing your entire submission, including the text file containing the answers to the questions.  
 
 The \texttt{.tgz} file should contain all the files in the \texttt{Lab1-matrixmul} folder provided, with all the changes and additions you have made to the source code.  In addition, provide a text file, Word Document, or PDF file with your answers to the following questions:
+\end{comment}
 
 \begin{enumerate}
 
@@ -112,44 +75,5 @@ The \texttt{.tgz} file should contain all the files in the \texttt{Lab1-matrixmu
 \end{enumerate}
 
 
-\end{enumerate}
-
-\subsection{Grading:}
-\label{grading:}
-
-Your submission will be graded on the following parameters.  
-
-\begin{itemize}
-
-\item Demo/knowledge: 25\%
-
-\begin{itemize}
-
-\item Produces correct result output file for our test inputs.
-\end{itemize}
-
-
-\item Functionality:  40\%
-
-\begin{itemize}
-
-\item Correct usage of CUDA library calls and C extensions.
-\item Correct usage of thread id's in matrix computation.
-\end{itemize}
-
-
-\item Report: 35\%
-
-\begin{itemize}
-
-\item Answer to question 1: 15\%, answer to question 2: 20\%
-\end{itemize}
-
-
-\end{itemize}
-
-% Bibliography
-\bibliographystyle{\mybibliostyle}
-\mybibliocommand
 
 \end{document}

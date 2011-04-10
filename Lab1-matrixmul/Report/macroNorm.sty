@@ -1,0 +1,96 @@
+\ProvidesPackage{macroNorm}
+\RequirePackage{amssymb,amsmath,amsthm,listings,fullpage,fancyhdr,graphicx,amssymb,amsmath,amsthm,textcomp,setspace,palatino,enumerate,listings,color,tikz,verbatim,algorithmic,array}
+\usepackage[utf8]{inputenc}
+\usetikzlibrary{snakes,arrows,shapes}
+\DeclareMathOperator{\MinCost}{MinCost}
+\renewcommand{\theenumi}{\alph{enumi})}
+\renewcommand{\labelenumi}{\theenumi}
+%Handy sets and variables
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\2}{\ensuremath{\sqrt{2}}}
+\newcommand{\Mc}{\ensuremath{\mathcal}}
+\newcommand{\Mb}{\ensuremath{\mathbb}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\Th}{\Theta}
+\newcommand{\Om}{\Omega}
+\newcommand{\eps}{\varepsilon}
+%Time saving expression abbreviations
+\newcommand{\Iab}{\int_a^b}
+\newcommand{\lin}{\lim_{n\rightarrow \infty}}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+%Theorems, etc
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{clm}{Claim}
+\newtheorem{col}{Corollary}
+\newtheorem{Def}{Definition}
+%Macros with Arguments
+\newcommand{\flo}[1]{\ensuremath{\lfloor #1 \rfloor}}
+\newcommand{\To}[2]{\ensuremath{{#1}_1, \dots, {#1}_{#2}}}
+\newcommand{\Tov}[3]{\ensuremath{{#1}_1#3 \dots #3 {#1}_{#2}}}
+\newcommand{\Toc}[3]{\ensuremath{{#2}_1{#1}_1+ \dots+ {#2}_{#3}{#1}_{#3}}}
+\newcommand{\Tocv}[4]{\ensuremath{{#2}_1{#1}_1#4 \dots #4 {#2}_{#3}{#1}_{#3}}}
+\newcommand{\Tocvm}[5]{\ensuremath{{#2}_{{#5} 1}{#1}_1 #4 \dots #4 {#2}_{{#5} #3}{#1}_{ #3}}}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{\MyLastName \ \thepage}
+\fancyfoot{}
+\setlength{\headheight}{12pt}
+\setlength{\headsep}{5pt}
+%Code Listings
+\renewcommand{\lstlistlistingname}{Code Listings}
+\renewcommand{\lstlistingname}{Code Listing}
+\definecolor{gray}{gray}{0.5}
+\definecolor{green}{rgb}{0,0.5,0}\lstnewenvironment{python}[1][]{
+  \lstset{
+    language=python,
+    basicstyle=\ttfamily\small\setstretch{1},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    alsoletter={1234567890},
+    otherkeywords={\ , \}, \{},
+    keywordstyle=\color{blue},
+    emph={access,and,break,class,continue,def,del,elif ,else,%
+      except,exec,finally,for,from,global,if,import,in,i s,%
+      lambda,not,or,pass,print,raise,return,try,while,assert},
+    emphstyle=\color{black}\bfseries,
+    emph={[2]True, False, None, self},
+    emphstyle=[2]\color{green},
+    emph={[3]from, import, as},
+    emphstyle=[3]\color{blue},
+    upquote=true,
+    morecomment=[s]{"""}{"""},
+    commentstyle=\color{gray}\slshape,
+    % emph={[4]1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10},
+    emphstyle=[4]\color{blue},
+    literate=*{:}{{\textcolor{blue}:}}{1}	%
+    {=}{{\textcolor{blue}=}}{1}			%
+    {-}{{\textcolor{blue}-}}{1}			%
+    {+}{{\textcolor{blue}+}}{1}			%
+    {*}{{\textcolor{blue}*}}{1}			%
+    {!}{{\textcolor{blue}!}}{1}			%
+    {(}{{\textcolor{blue}(}}{1}			%
+    {)}{{\textcolor{blue})}}{1}			%
+    {[}{{\textcolor{blue}[}}{1}			%
+    {]}{{\textcolor{blue}]}}{1}			%
+    {<}{{\textcolor{blue}<}}{1}			%
+    {>}{{\textcolor{blue}>}}{1},			%
+    #1
+  }}{}
+
+\begin{comment} %Below is how to use the python style%
+  \begin{python}[frame=none, basicstyle=\footnotesize\ttfamily]
+    #pythons
+  \end{python}
+\end{comment}
