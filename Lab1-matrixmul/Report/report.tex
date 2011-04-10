@@ -1,0 +1,155 @@
+\documentclass[11pt,oneside]{article}
+\usepackage{geometry}			% See geometry.pdf to learn the layout options.
+								% There are lots.
+								
+\geometry{letterpaper}			% ... or a4paper or a5paper or ... 
+%\geometry{landscape}			% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}	% Activate to begin paragraphs with an empty
+								% line rather than an indent
+
+\usepackage{ifpdf}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+
+% Definitions
+\def\myauthor{Author}
+\def\mytitle{Title}
+\def\mycopyright{\myauthor}
+\def\mykeywords{}
+\def\mybibliostyle{plain}
+\def\mybibliocommand{}
+\def\mysubtitle{}
+
+
+
+%
+%	PDF Stuff
+%
+
+\ifpdf
+  \pdfoutput=1
+  \usepackage[
+  	plainpages=false,
+  	pdfpagelabels,
+  	bookmarksnumbered,
+  	pdftitle={\mytitle},
+  	pagebackref,
+  	pdfauthor={\myauthor},
+  	pdfkeywords={\mykeywords}
+  	]{hyperref}
+  \usepackage{memhfixc}
+\fi
+
+
+% Title Information
+\title{\mytitle \\ \mysubtitle}
+\author{\myauthor}
+
+\begin{document}
+
+
+% Title Page
+
+\maketitle
+
+% Copyright Page
+\textcopyright{} \mycopyright
+
+%
+% Main Content
+%
+
+
+% Layout settings
+\setlength{\parindent}{1em}
+
+\section{CS668 Parallel Computing - Spring 2011}
+\label{cs668parallelcomputing-spring2011}
+
+\subsection{Lab \#1: Matrix Multiplication}
+\label{lab1:matrixmultiplication}
+
+\begin{enumerate}
+
+\item Unzip \texttt{Lab1-matrixmul.zip} into your \texttt{sdk/projects} directory
+
+
+\item Edit the \texttt{MatrixMulOnDevice(...)} function in \texttt{matrixmul.cu} and the \texttt{MatrixMulKernel(...)} function in \texttt{matrixmul\_kernel.cu} to complete the functionality of the matrix multiplication on the device. Do not change the source code elsewhere. The size of the matrix is defined such that one thread block will be sufficient to compute the entire solution matrix.
+
+
+\item There are several modes of operation for the application.  
+
+\begin{itemize}
+
+\item No arguments:  The application will create two randomly initialized matrices to multiply.  After the device multiplication is invoked, it will compute the correct solution matrix using the CPU, and compare that solution with the device-computed solution.  If it matches (within a certain tolerance), it will print out \texttt{Test PASSED} to the screen before exiting.
+
+
+\item One argument:  The application will use the random initialization to    create the input matrices, and write the device-computed output to the file specified by the argument.  
+
+
+\item Two arguments:  The application will initialize the two input matrices with the values found in the files provided as arguments.  No output is written to file.
+
+
+\item Three arguments:  The application will read its inputs from the files provided by the first two arguments, and write its output to the file provided in the third. Note that if you wish to use the output of one run of the application as an input, you must delete the first line in the output file, which displays the accuracy of the values within the file. The value is not relevant for this application.
+
+
+\end{itemize}
+
+
+\item To submit your solution, upload to Blackboard a zipped file containing your entire submission, including the text file containing the answers to the questions.  
+
+The \texttt{.tgz} file should contain all the files in the \texttt{Lab1-matrixmul} folder provided, with all the changes and additions you have made to the source code.  In addition, provide a text file, Word Document, or PDF file with your answers to the following questions:
+
+\begin{enumerate}
+
+\item How many times is each element of the input matrices loaded during the execution of the kernel?
+
+
+\item What is the memory-access to floating-point computation ratio in each thread?  Consider a multiply and addition as separate operations, and ignore the storing of the result.  Only global memory loads should be counted towards your off-chip bandwidth
+
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+\subsection{Grading:}
+\label{grading:}
+
+Your submission will be graded on the following parameters.  
+
+\begin{itemize}
+
+\item Demo/knowledge: 25\%
+
+\begin{itemize}
+
+\item Produces correct result output file for our test inputs.
+\end{itemize}
+
+
+\item Functionality:  40\%
+
+\begin{itemize}
+
+\item Correct usage of CUDA library calls and C extensions.
+\item Correct usage of thread id's in matrix computation.
+\end{itemize}
+
+
+\item Report: 35\%
+
+\begin{itemize}
+
+\item Answer to question 1: 15\%, answer to question 2: 20\%
+\end{itemize}
+
+
+\end{itemize}
+
+% Bibliography
+\bibliographystyle{\mybibliostyle}
+\mybibliocommand
+
+\end{document}
