@@ -31,6 +31,6 @@ event.wait()
 
 cl.enqueue_read_buffer(queue, primes_buf, sieve).wait()
 
-for i in range(0,len(sieve)):
-    if sieve[i] == 0:
+for i, s in enumerate(sieve):
+    if s == 0:
         print i
