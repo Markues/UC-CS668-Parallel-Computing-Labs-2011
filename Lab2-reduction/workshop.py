@@ -7,7 +7,7 @@ import numpy.linalg as la
 n = 1000
 block_size = 256
 
-KERNEL_CODE = ''.join( open('sieve.cl').readlines() )
+KERNEL_CODE = open('sieve.cl').read()
 
 primes = numpy.zeros(n).astype(numpy.int32)
 

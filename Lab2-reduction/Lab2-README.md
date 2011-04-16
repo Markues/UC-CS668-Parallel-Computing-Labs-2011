@@ -1,6 +1,6 @@
 # Lab Assignment #2 - Due Tuesday April 19
 
-##Instructions 
+## Instructions 
 Due Tuesday April 19 on Blackboard
 
 1. Produce an initial, basic parallel version of Sieve. Start off with basic initial assumptions 
