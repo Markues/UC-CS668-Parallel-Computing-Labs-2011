@@ -1,13 +1,13 @@
 #define maxn %(max_n)d
 #define hash %(hash)d
 
-__local int proposed_storage(__local int value, __global int* primer __local int bound) {
+__local int proposed_storage(__local int value, __global int* primer) {
     int tmp = value % hash;
     if (primer[tmp] == 0) return tmp;
+    int bound = 1;
     while (bound < 1000) {
+        if (primer[tmp + bound] == 0) return tmp + bound;
         bound += 1;
-        tmp = proposed_storage(value, primer, bound);
-        if (tmp > 0) return tmp;
     }
     return -1;
 }
