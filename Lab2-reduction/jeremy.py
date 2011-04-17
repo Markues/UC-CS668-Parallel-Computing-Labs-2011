@@ -31,11 +31,9 @@ class CL:
 
     def execute(self):
         event = self.program.part1(self.queue, self.a.shape, None, self.a_buf)
-        c = numpy.empty_like(self.a)
-        cl.enqueue_read_buffer(self.queue, self.a_buf, c).wait()
+        cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
         print 1e-9 * (event.profile.end - event.profile.start)
         print "a", self.a
-        print "c", c
 
 
 
