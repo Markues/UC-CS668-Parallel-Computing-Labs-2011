@@ -6,15 +6,15 @@ import pyopencl as cl
 import numpy
 
 class CL:
-    def __init__(self):
+    def __init__(self, n):
         self.ctx = cl.create_some_context()
         self.queue = cl.CommandQueue(self.ctx)
+        self.n = n
 
     def loadProgram(self, filename):
         #read in the OpenCL source file as a string
-        f = open(filename, 'r')
-        fstr = "".join(f.readlines())
-        kernel_params = {"max_n": 100000000}
+        fstr = open(filename).read()
+        kernel_params = {"max_n": self.n}
 
         #create the program
         self.program = cl.Program(self.ctx, fstr % kernel_params).build()
@@ -23,7 +23,7 @@ class CL:
         mf = cl.mem_flags
 
         #initialize client side (CPU) arrays
-        self.a = numpy.array(range(100000000), dtype=numpy.int32)
+        self.a = numpy.array(range(self.n), dtype=numpy.int32)
 
         #create OpenCL buffers
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
@@ -38,7 +38,7 @@ class CL:
 
 
 if __name__ == "__main__":
-    example = CL()
+    example = CL(2**20)
     example.loadProgram("part1.cl")
     example.popCorn()
     example.execute()
