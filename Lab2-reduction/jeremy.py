@@ -8,7 +8,8 @@ import numpy
 class CL:
     def __init__(self, n):
         self.ctx = cl.create_some_context()
-        self.queue = cl.CommandQueue(self.ctx)
+        cf = cl.command_queue_properties
+        self.queue = cl.CommandQueue(self.ctx, properties=cf.PROFILING_ENABLE)
         self.n = n
 
     def loadProgram(self, filename):
