@@ -1,11 +1,11 @@
-#define maxn %(max_n)d
-#define hash %(hash)d
+#define maxn 100
+#define hash 10
 
 __local int proposed_storage(__local int value, __global int* primer) {
     int tmp = value % hash;
     if (primer[tmp] == 0) return tmp;
     int bound = 1;
-    while (bound < 1000) {
+    while (bound < hash) {
         if (primer[tmp + bound] == 0) return tmp + bound;
         bound += 1;
     }
@@ -18,8 +18,8 @@ __kernel void findsmallest(__global int* primer)
 	if (idx > 1) {
         int i = idx;
 		for(i+=idx; i < maxn; i+=idx) {
-            int bound = 0
-			int tmp = proposed_storage(i, primer, bound)
+            int bound = 0;
+			int tmp = proposed_storage(i, primer);
             if (tmp < 0) continue;
             primer[tmp] = i;
         }

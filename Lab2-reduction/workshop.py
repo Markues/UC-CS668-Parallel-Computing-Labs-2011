@@ -4,8 +4,11 @@ import pyopencl as cl
 import numpy
 import numpy.linalg as la
 
-n = 1000
-block_size = 256
+#n = 2**20 * 7 / 10
+n = 655360
+n = 100000
+print n
+block_size = None
 
 KERNEL_CODE = open('sieve.cl').read()
 
