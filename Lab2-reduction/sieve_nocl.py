@@ -10,8 +10,8 @@ def sieve(n):
     primes[0] = 0
     primes[1] = 0
     k = 2
-    while(k**2 <= n):
-        mult = k**2
+    while(k*k <= n):
+        mult = k*k
         while mult <= n:
             primes[mult] = 0
             mult = mult + k
