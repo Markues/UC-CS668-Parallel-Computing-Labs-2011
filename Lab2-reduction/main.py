@@ -24,7 +24,7 @@ class CL:
         mf = cl.mem_flags
 
         #initialize client side (CPU) arrays
-        self.a = numpy.ones((self.n,1), dtype=numpy.uint32)
+        self.a = numpy.ones((self.n,4), dtype=numpy.uint32)
 
         #create OpenCL buffers
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
@@ -32,12 +32,13 @@ class CL:
     def execute(self):
         event = self.program.part1(self.queue, (self.n,), None, self.a_buf)
         cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
-        #print 'Duration:', 1e-9 * (event.profile.end - event.profile.start)
+        print 'Duration:', 1e-9 * (event.profile.end - event.profile.start)
         #print [i for i in self.a if not i]
         #print self.a[:10]
-        for i,x in enumerate(self.a):
-            if x:
-                print i
+        print self.a
+        #for i,x in enumerate(self.a):
+        #    if x:
+        #        print i
         #for i,x in enumerate(reversed(self.a)):
         #    if not x:
         #        print self.n - i - 1
