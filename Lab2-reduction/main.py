@@ -11,7 +11,7 @@ class CL:
         cf = cl.command_queue_properties
         self.queue = cl.CommandQueue(self.ctx, properties=cf.PROFILING_ENABLE)
         self.n = n
-        self.block_size = 1024
+        self.block_size = 512
         self.primes = []
         self.offset = 0
 
@@ -35,11 +35,15 @@ class CL:
 
     def execute(self):
 
-        def perform_sieve(self):
+        def perform_sieve():
             pass
         
+        def filter(primes_array, bit_array, offset, block_size):
+            for i in range(len(bit_array)):
+                start_index = offset % prime
+                bit_array[start_index] = 0 #mark as a composite
+            return bit_array
         
-
         event1 = self.program.sieve(self.queue, (self.block_size,), None, self.a_buf)
         cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
 
