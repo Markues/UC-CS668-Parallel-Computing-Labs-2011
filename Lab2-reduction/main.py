@@ -44,16 +44,16 @@ class CL:
             if( not len(self.primes) ):
                 return empty_bitarray()
 
-            a = empty_bitarray()
             b = numpy.array(self.primes, dtype=numpy.uint32)
+            a = empty_bitarray()
             c = numpy.array(offset, dtype=numpy.uint32)
 
-            a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=a)
             b_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY  | self.mf.COPY_HOST_PTR, hostbuf=b)
+            a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=a)
             c_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY  | self.mf.COPY_HOST_PTR, hostbuf=c)
             
             # send integers and new bit mask to pfilter
-            event2 = self.program.pfilter(self.queue, (len(self.primes),), (self.block_size,), (1,), None, a_buf, b_buf, c_buf)
+            event2 = self.program.pfilter(self.queue, (self.block_size,), None, b_buf, a_buf, c_buf)
             cl.enqueue_read_buffer(self.queue, a_buf, a)
             
             print 'Filter Duration:', 1e-9 * (event2.profile.end - event2.profile.start)
