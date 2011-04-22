@@ -13,6 +13,7 @@ class CL:
         self.n = n
         self.block_size = 1024
         self.primes = []
+        self.offset = 0
 
     def loadProgram(self, filename):
         #read in the OpenCL source file as a string
@@ -26,7 +27,7 @@ class CL:
         mf = cl.mem_flags
 
         #initialize client side (CPU) arrays
-        self.a = numpy.ones((self.block_size,1), dtype=numpy.uint32)
+        self.a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
 
         #create OpenCL buffers
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
@@ -34,22 +35,28 @@ class CL:
     def execute(self):
         event1 = self.program.sieve(self.queue, (self.block_size,), None, self.a_buf)
         cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
+
+        self.offset += self.block_size
+
         # store bit mask of primes as integers
         for i,x in enumerate(self.a):
             if x:
                 self.primes.append(i)
 
         self.a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
-        print self.a
+        self.b = numpy.array(self.primes, dtype=numpy.uint32)
+        self.c = numpy.array(self.offset, dtype=numpy.uint32)
+
         for x in self.primes:
                 self.a[x] = 0
-        print self.a
-        exit()
 
+        mf = cl.mem_flags
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
+        self.b_buf = cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=self.b)
+        self.c_buf = cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=self.c)
 
         # send integers and new bit mask to pfilter
-        event2 = self.program.pfilter(self.queue, (self.block_size,), None, self.a_buf)
+        event2 = self.program.pfilter(self.queue, (len(self.primes),), (self.block_size,), (1,), None, self.a_buf, self.b_buf, self.c_buf)
         
         print 'Sieve Duration:', 1e-9 * (event1.profile.end - event1.profile.start)
         print 'Filter Duration:', 1e-9 * (event2.profile.end - event2.profile.start)
