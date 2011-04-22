@@ -80,7 +80,7 @@ class CL:
             bitarray = filter_primes(bitarray, offset)
             bitarray = perform_sieve(bitarray, offset)
             bitarray_to_primes_array(bitarray, offset)
-            self.offset += self.block_size
+            offset += self.block_size
 
 if __name__ == "__main__":
     example = CL(2**11)
