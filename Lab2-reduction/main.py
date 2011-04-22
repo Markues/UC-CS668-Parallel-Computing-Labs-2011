@@ -57,8 +57,8 @@ class CL:
             c = numpy.array(offset, dtype=numpy.uint32)
 
             a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=a)
-            b_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=b)
-            c_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=c)
+            b_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY  | self.mf.COPY_HOST_PTR, hostbuf=b)
+            c_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY  | self.mf.COPY_HOST_PTR, hostbuf=c)
             
             # send integers and new bit mask to pfilter
             event2 = self.program.pfilter(self.queue, (len(self.primes),), (self.block_size,), (1,), None, a_buf, b_buf, c_buf)
