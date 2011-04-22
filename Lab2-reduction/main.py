@@ -30,9 +30,13 @@ class CL:
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
 
     def execute(self):
-        event = self.program.part1(self.queue, (self.n,), None, self.a_buf)
+        event1 = self.program.sieve(self.queue, (self.n,), None, self.a_buf)
+        # store bit mask of primes as integers
+        # send integers and new bit mask to pfilter
+        event2 = self.program.pfilter(self.queue, (self.n,), None, self.a_buf)
         cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
-        print 'Duration:', 1e-9 * (event.profile.end - event.profile.start)
+        print 'Sieve Duration:', 1e-9 * (event1.profile.end - event1.profile.start)
+        print 'Filter Duration:', 1e-9 * (event2.profile.end - event2.profile.start)
         #print [i for i in self.a if not i]
         #print self.a[:10]
         #print self.a
