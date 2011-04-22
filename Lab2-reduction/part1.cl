@@ -19,7 +19,7 @@ __kernel void pfilter(__global uint *prime_list, __global uint *a, __global uint
     //each work item filters out its assigned prime
     int prime = prime_list[gid];
     
-    for (int i = offset % prime; i < maxn; i = i + prime;) {
+    for (int i = offset %% prime; i < maxn; i = i + prime) {
         a[i] = 0;
     }
     

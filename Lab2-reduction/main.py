@@ -11,12 +11,13 @@ class CL:
         cf = cl.command_queue_properties
         self.queue = cl.CommandQueue(self.ctx, properties=cf.PROFILING_ENABLE)
         self.n = n
+        self.block_size = 1024
         self.primes = []
 
     def loadProgram(self, filename):
         #read in the OpenCL source file as a string
         fstr = open(filename).read()
-        kernel_params = {"max_n": self.n}
+        kernel_params = {"max_n": self.block_size}
 
         #create the program
         self.program = cl.Program(self.ctx, fstr % kernel_params).build()
@@ -25,26 +26,30 @@ class CL:
         mf = cl.mem_flags
 
         #initialize client side (CPU) arrays
-        self.a = numpy.ones((self.n,1), dtype=numpy.uint32)
+        self.a = numpy.ones((self.block_size,1), dtype=numpy.uint32)
 
         #create OpenCL buffers
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
 
     def execute(self):
-        event1 = self.program.sieve(self.queue, (self.n,), None, self.a_buf)
+        event1 = self.program.sieve(self.queue, (self.block_size,), None, self.a_buf)
         cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
         # store bit mask of primes as integers
         for i,x in enumerate(self.a):
             if x:
                 self.primes.append(i)
 
-        self.a = numpy.ones((self.n, 1), dtype=numpy.uint32)
-        
+        self.a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
+        print self.a
         for x in self.primes:
-                self.a[0][x % ] = 0
+                self.a[x] = 0
+        print self.a
+        exit()
+
+        self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
 
         # send integers and new bit mask to pfilter
-        event2 = self.program.pfilter(self.queue, (self.n,), None, self.a_buf)
+        event2 = self.program.pfilter(self.queue, (self.block_size,), None, self.a_buf)
         
         print 'Sieve Duration:', 1e-9 * (event1.profile.end - event1.profile.start)
         print 'Filter Duration:', 1e-9 * (event2.profile.end - event2.profile.start)
@@ -60,7 +65,7 @@ class CL:
         #        break
 
 if __name__ == "__main__":
-    example = CL(2**10)
+    example = CL(2**11)
     example.loadProgram("part1.cl")
     example.popCorn()
     example.execute()
