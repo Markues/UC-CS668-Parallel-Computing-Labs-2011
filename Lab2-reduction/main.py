@@ -50,18 +50,18 @@ class CL:
         def filter_primes(primes_array, bit_array, offset):
             if( not len(primes_array) ):
                 return empty_bitarray()
-            self.a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
-            self.b = numpy.array(self.primes, dtype=numpy.uint32)
-            self.c = numpy.array(self.offset, dtype=numpy.uint32)
-            self.a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=self.a)
-            self.b_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=self.b)
-            self.c_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=self.c)
+            a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
+            b = numpy.array(self.primes, dtype=numpy.uint32)
+            c = numpy.array(offset, dtype=numpy.uint32)
+            a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=a)
+            b_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=b)
+            c_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=c)
             
             # send integers and new bit mask to pfilter
-            event2 = self.program.pfilter(self.queue, (len(self.primes),), (self.block_size,), (1,), None, self.a_buf, self.b_buf, self.c_buf)
-            cl.enqueue_read_buffer(self.queue, self.a_buf, self.a)
+            event2 = self.program.pfilter(self.queue, (len(self.primes),), (self.block_size,), (1,), None, a_buf, b_buf, c_buf)
+            cl.enqueue_read_buffer(self.queue, a_buf, a)
             
-            return self.a
+            return a
         
         def empty_bitarray():
             return numpy.ones((self.block_size,1), dtype=numpy.uint32)
