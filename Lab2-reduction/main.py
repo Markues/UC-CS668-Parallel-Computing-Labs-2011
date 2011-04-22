@@ -35,6 +35,7 @@ class CL:
             
             event1 = self.program.sieve(self.queue, (self.block_size,), None, a_buf)
             cl.enqueue_read_buffer(self.queue, a_buf, a).wait()
+            print 'Sieve Duration:', 1e-9 * (event1.profile.end - event1.profile.start)
             
             return a
         
@@ -55,6 +56,8 @@ class CL:
             event2 = self.program.pfilter(self.queue, (len(self.primes),), (self.block_size,), (1,), None, a_buf, b_buf, c_buf)
             cl.enqueue_read_buffer(self.queue, a_buf, a)
             
+            print 'Filter Duration:', 1e-9 * (event2.profile.end - event2.profile.start)
+
             return a
         
         def empty_bitarray():
@@ -77,10 +80,6 @@ class CL:
             bitarray = perform_sieve(bitarray, offset)
             bitarray_to_primes_array(bitarray, offset)
             self.offset += self.block_size
-        
-        
-        print 'Sieve Duration:', 1e-9 * (event1.profile.end - event1.profile.start)
-        print 'Filter Duration:', 1e-9 * (event2.profile.end - event2.profile.start)
 
 if __name__ == "__main__":
     example = CL(2**11)
