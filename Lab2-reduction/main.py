@@ -76,6 +76,7 @@ class CL:
         offset = 0
         bitarray = None
         while(self.offset < self.n):
+            print 'Offset',self.offset
             bitarray = filter_primes(bitarray, offset)
             bitarray = perform_sieve(bitarray, offset)
             bitarray_to_primes_array(bitarray, offset)
