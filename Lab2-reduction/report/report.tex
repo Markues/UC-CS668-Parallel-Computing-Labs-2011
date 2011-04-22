@@ -16,6 +16,11 @@
 
 \def\thesection{\Roman{section}.}
 \hfill \\
+\section{ Background }
+	The Sieve of Eratosthenes is an algorithm used to find prime numbers between 1 and another number.  Parallelization on the CUDA architecture is trivial at first, as one can simply offload an array to the kernel and begin sieving in a single block.  This works similar to the sequential algorithm by flagging each multiple of a given number as a non-prime.  However, parallelizing the sieve in this "naive" fashion presents a distinct problem when the upper bound reaches large numbers such as the bound given in the assignment, $2^{30}$.  The graphics card simply cannot allocate an array of appropriate size to hold all integers up to the bound.
+
+Our approach to solving this problem entails separating the initial array into smaller pieces which can be digested by the GPU without memory issues.  To do this, we split the array into blocks, each responsible for 1024.  Using the size of this block as an offset and a bitmask, we can call the kernel on each individual block and produce a list of the prime numbers within it.  We then filter the prime numbers out of the block and place it in a list of primes.  This list is passed back into the kernel and used to ensure that we can continue the sieve throughout the segments of the original array.
+
 \section{ Optimizations }
 \begin{enumerate}[1.]
 
