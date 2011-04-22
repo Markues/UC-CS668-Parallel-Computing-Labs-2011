@@ -8,7 +8,7 @@ __kernel void part1(__global uint4 *a)
     }
     int i = gid * 2;
     while (i < maxn) {
-        int sub_block = i % 4;
+        int sub_block = i %% 4; // `%%` is just to satisfy python template
         int my_block = i/4;
         if (sub_block == 0) {
             a[my_block].w = 0;
