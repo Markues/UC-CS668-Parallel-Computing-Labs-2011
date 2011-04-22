@@ -48,11 +48,14 @@ class CL:
             return self.a
         
         def filter_primes(primes_array, bit_array, offset):
+
             if( not len(primes_array) ):
                 return empty_bitarray()
+
             a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
             b = numpy.array(self.primes, dtype=numpy.uint32)
             c = numpy.array(offset, dtype=numpy.uint32)
+
             a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=a)
             b_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=b)
             c_buf = cl.Buffer(self.ctx, self.mf.READ_ONLY | self.mf.COPY_HOST_PTR, hostbuf=c)
