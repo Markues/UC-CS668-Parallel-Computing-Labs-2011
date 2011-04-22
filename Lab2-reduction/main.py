@@ -23,6 +23,9 @@ class CL:
         #create the program
         self.program = cl.Program(self.ctx, fstr % kernel_params).build()
 
+    def perform_sieve(self):
+        pass
+
     def popCorn(self):
         mf = cl.mem_flags
 
