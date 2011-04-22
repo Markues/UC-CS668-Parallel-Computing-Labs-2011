@@ -24,15 +24,6 @@ class CL:
         #create the program
         self.program = cl.Program(self.ctx, fstr % kernel_params).build()
 
-
-    def popCorn(self):
-
-        #initialize client side (CPU) arrays
-        self.a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
-
-        #create OpenCL buffers
-        self.a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=self.a)
-
     def execute(self):
 
         def perform_sieve(bitarray, offset=0):
@@ -94,5 +85,4 @@ class CL:
 if __name__ == "__main__":
     example = CL(2**11)
     example.loadProgram("part1.cl")
-    example.popCorn()
     example.execute()
