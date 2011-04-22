@@ -23,8 +23,6 @@ class CL:
         #create the program
         self.program = cl.Program(self.ctx, fstr % kernel_params).build()
 
-    def perform_sieve(self):
-        pass
 
     def popCorn(self):
         mf = cl.mem_flags
@@ -36,6 +34,12 @@ class CL:
         self.a_buf = cl.Buffer(self.ctx, mf.READ_WRITE | mf.COPY_HOST_PTR, hostbuf=self.a)
 
     def execute(self):
+
+        def perform_sieve(self):
+            pass
+        
+        
+
         event1 = self.program.sieve(self.queue, (self.block_size,), None, self.a_buf)
         cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
 
