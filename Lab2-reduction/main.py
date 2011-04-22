@@ -28,19 +28,19 @@ class CL:
 
         def perform_sieve(bitarray, offset=0):
             #initialize client side (CPU) arrays
-            self.a = bitarray
+            a = bitarray
 
             #create OpenCL buffers
-            self.a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=self.a)
+            a_buf = cl.Buffer(self.ctx, self.mf.READ_WRITE | self.mf.COPY_HOST_PTR, hostbuf=a)
             
-            event1 = self.program.sieve(self.queue, (self.block_size,), None, self.a_buf)
-            cl.enqueue_read_buffer(self.queue, self.a_buf, self.a).wait()
+            event1 = self.program.sieve(self.queue, (self.block_size,), None, a_buf)
+            cl.enqueue_read_buffer(self.queue, a_buf, a).wait()
             
-            return self.a
+            return a
         
-        def filter_primes(primes_array, bit_array, offset):
+        def filter_primes(bit_array, offset):
 
-            if( not len(primes_array) ):
+            if( not len(self.primes) ):
                 return empty_bitarray()
 
             a = empty_bitarray()
@@ -61,21 +61,21 @@ class CL:
             return numpy.ones((self.block_size,1), dtype=numpy.uint32)
         
         def bitarray_to_primes_array(bitarray, offset):
-            for i,x in enumerate(self.a):
+            for i,x in enumerate(bitarray):
                 i += offset
                 if x:
                     self.primes.append(i)
-            return self.primes
         
         def print_primes_array():
             for prime in self.primes:
                 print prime
         
         offset = 0
+        bitarray = None
         while(self.offset < self.n):
-            bitarray = filter_primes(self.primes, bitarray, offset)
-            bitarray = perform_sieve(bitarray, 0)
-            self.primes += bitarray_to_primes_array(bitarray, offset)
+            bitarray = filter_primes(bitarray, offset)
+            bitarray = perform_sieve(bitarray, offset)
+            bitarray_to_primes_array(bitarray, offset)
             self.offset += self.block_size
         
         
