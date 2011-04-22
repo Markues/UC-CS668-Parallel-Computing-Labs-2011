@@ -52,7 +52,7 @@ class CL:
             if( not len(primes_array) ):
                 return empty_bitarray()
 
-            a = numpy.ones((self.block_size, 1), dtype=numpy.uint32)
+            a = empty_bitarray()
             b = numpy.array(self.primes, dtype=numpy.uint32)
             c = numpy.array(offset, dtype=numpy.uint32)
 
