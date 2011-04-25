@@ -18,7 +18,11 @@
 \hfill \\
 \section{ Background }
 
-\paragraph{}The Sieve of Eratosthenes is an algorithm used to find prime numbers between 1 and an arbitrary $n$. We can naïvely model this in parallel by assigning each work item an enumerated value ($1\ldots n$) and ``sieving'' each multiple of these values until all that remains are the primes. However, parallelizing the sieve in this fashion presents a distinct problem when the upper bound reaches large numbers such as the bound given in the assignment, $2^{30}$.  The graphics card simply cannot allocate an array of appropriate size to hold all integers up to the bound. Clearly we need to break down the problem into discrete chunks.
+\paragraph{}The Sieve of Eratosthenes is an algorithm used to find prime numbers between 1 and an arbitrary $n$. 
+We can naïvely model this in parallel by assigning each work item an enumerated value ($1\ldots n$) and ``sieving'' each multiple of these values until all that remains are the primes. 
+However, parallelizing the sieve in this fashion presents a distinct problem when the upper bound reaches large numbers such as the bound given in the assignment, $2^{30}$.
+The graphics card simply cannot allocate an array of appropriate size to hold all integers up to this bound. 
+Clearly we need to break down the problem into discrete chunks.
 
 We approach this problem by partitioning the initial array into evenly sized chunks which can be digested by the GPU bounded by the number of primes found instead of $n$. 
 
