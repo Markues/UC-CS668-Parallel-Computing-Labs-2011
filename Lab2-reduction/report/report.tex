@@ -30,7 +30,7 @@ We approach this problem by partitioning the initial array into evenly sized chu
 \begin{enumerate}[1.]
 \item \textbf{Using a bit array instead of whole integer arrays}. For all practical purposes, we found that a \texttt{uint4} array with some bitmasking allows us to compress the size of our sieve.
 
-\item \textbf{Selecting out the common primes}. A great deal of time is spent marking off one of the most common primes: $2$. By changing the indexing scheme of our bits, we can select only odd numbers and compress our space by half at almost no added time overhead.
+\item \textbf{Selecting out the common composites}. A great deal of time is spent marking off composites of one of the first primes: $2$. By changing the indexing scheme of our bits, we can select only odd numbers and compress our space by half at almost no added time overhead.
 
 \item \textbf{Building sieve block instances with the GPU}. When switching from one block of sieve to a new one, our sieve used the host to build new blocks and select out the existing primes. This seemed repetitive, and we built some extra kernel code to build new sieve blocks and filter out found primes using the GPU
 \end{enumerate}
