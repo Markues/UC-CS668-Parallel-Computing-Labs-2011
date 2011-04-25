@@ -28,22 +28,23 @@ We approach this problem by partitioning the initial array into evenly sized chu
 
 \section{ Optimizations }
 \begin{enumerate}[1.]
-\item This is where the first optimization goes
+\item \textbf{Using a bit array instead of whole integer arrays}. For all practical purposes, we found that a \texttt{uint4} array with some bitmasking allows us to compress the size of our sieve.
 
-\item This is where the second one goes
+\item \textbf{Selecting out the common primes}. A great deal of time is spent marking off one of the most common primes: $2$. By changing the indexing scheme of our bits, we can select only odd numbers and compress our space by half at almost no added time overhead.
 
-\item This is where the third one goes
+\item \textbf{Building sieve block instances with the GPU}. When switching from one block of sieve to a new one, our sieve used the host to build new blocks and select out the existing primes. This seemed repetitive, and we built some extra kernel code to build new sieve blocks and filter out found primes using the GPU
 \end{enumerate}
 
 \section{ Timings }
 
 \begin{center}
-    \begin{tabular}{ | l | l | l |}
+    \begin{tabular}{r | c | c | c | c |}
 	\hline
-   	Optimization & Original Time (s) & Final Time (s) \\ \hline
-    	1 & 0.0001 & 0.0001 \\ \hline
-	2 & 0.0001 & 0.0001 \\ \hline
-	3 & 0.0001 & 0.0001 \\  \hline
+   	Optimization & Test1 & Test2 & Test3 & TestAvg \\
+   	\hline
+   	1            & 0.0   & 0.00  & 0.00  & 0.00     \\
+   	2            & 0.0   & 0.00  & 0.00  & 0.00     \\
+   	3            & 0.0   & 0.00  & 0.00  & 0.00     \\
     \end{tabular}
 \end{center}
 
