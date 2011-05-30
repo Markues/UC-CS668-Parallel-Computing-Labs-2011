@@ -42,68 +42,67 @@ bool InitCUDA(void)
 //! Matrix multiplication on the device: C = A * B
 //! WA is A's width and WB is B's width
 ////////////////////////////////////////////////////////////////////////////////
-__global__ static void radixSort(int* C, int N, int bit)
+__global__ static void radixSort(int* C, int* A,int N, int bit)
 {    
     int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-	__shared__ int sortList[4000];
+	extern __shared__ int sortList[];
 	int numFalses = 0;
 	for(int i = idx; i < N; i++){ //for each item
-		if(((int)(C[i]/pow(2.0,bit)) % 2) == 1){
-			numFalses ++;
+		if(((int)(A[i]/pow(2.0,bit)) % 2) == 1){
 			sortList[i] = 0;
 		}
 		else
 		{
+			numFalses++;
 			sortList[i] = 1;					
 		}
 	}
-	/*for(int i = 1; i < N; i++){
-		sortList[i] += sortList[i-1];
+	C[0] = sortList[0];
+	for(int i=idx;i<N;i++){
+		C[i] = C[i-1] + sortList[i]; 
 	}
-	int rollingSum = 0;
 	for(int i = idx; i < N; i++){		
 		if(sortList[i] == 0)
 		{
-			C[i] = i - rollingSum + numFalses;							
-		}
-		else
-		{			
-			C[i] = rollingSum;
-			rollingSum += 1;
+			C[i] = i - C[i] + numFalses;							
 		}
 		
-	}*/
+	}
 }
 int main(int argc, char* argv[])
 {
-	int  *c,*a, *temp; //host and device arrays
-	const int n = 4000; // num elements in array
+	int  *c, *a, *d_a, *d_c; //host and device arrays
+	const int n = 10; // num elements in array
 	size_t size = n * sizeof(int); //size of array
-
+	int block_size = 512;
+	
 	a = (int *)malloc(size);//allocate host array
-	temp = (int *)malloc(size);//allocate host array 2
-	cudaMalloc((void**) &c, size); //allocate device array
+	c = (int *)malloc(size);//allocate host array
+	cudaMalloc((void**) &d_a, size); //allocate device array
+	cudaMalloc((void**) &d_c, size); //allocate device array
 
 	//init host array
-	for(int i = 0; i < n;i++) a[i] = (int)rand() % 1024;	
-	for(int i = 0; i < n;i++) temp[i] = a[i];	
+	for(int i = 0; i < n;i++) a[i] = (int)rand() % 10;	
 	printf(" OLD LIST: \n");
 	for(int k=0;k < n;++k) printf("%d ",a[k]);
 
 	//copy it to the device 
-	cudaMemcpy(c,a,size,cudaMemcpyHostToDevice);
-
-	int block_size = 512;
-	int n_blocks = n/block_size + (n%block_size == 0 ? 0:1);
+	
 	
 	for(int bit = 0; bit >= 0;bit--){ //for each bit
-		radixSort<<<1, 1>>>(c, n, bit);
-		cudaMemcpy(a, c, sizeof(int) * n, cudaMemcpyDeviceToHost);
+		cudaMemcpy(d_a,a,size,cudaMemcpyHostToDevice);
+		cudaMemcpy(d_c,c,size,cudaMemcpyHostToDevice);
+		radixSort<<<ceil((double)n/block_size),block_size,size>>>(d_c,d_a, n, bit);
+		cudaMemcpy(a, d_a, sizeof(int) * n, cudaMemcpyDeviceToHost);
+		cudaMemcpy(c, d_c, sizeof(int) * n, cudaMemcpyDeviceToHost);
 		//parallel prefix sum
 	}
-	
-	//for(int k=0;k < n;++k)printf("%d ",a[k]);
-
-	free(a); cudaFree(c);
+	//for(int i=1;i<n;i++){
+	//	a[i] += a[i-1];
+	//}
+	printf("\n");
+	for(int k=0;k < n;++k) printf("%d ",c[k]);
+	cudaFree(c);
+	free(a); 
 	return 0;
 }
