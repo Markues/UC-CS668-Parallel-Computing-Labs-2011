@@ -1,10 +1,11 @@
 \documentclass[12pt]{article}
 \newcommand{\MyFullName}{Jon Wedaman, Jeremy Lavergne, Alex Padgett, Jeff Farris}
 \newcommand{\MyLastName}{Wedaman, Lavergne, Padgett, Farris}
+\renewcommand{\indent}{\hspace{0.25in}}
 \RequirePackage{macroNorm}
 \title{ Parallel Computing \\ Lab 3: Radix Sort }
 \author{\MyFullName}
-\date{ Due _________ }
+\date{ Due June 1, 2010 }
 \begin{document}
 \maketitle
 \thispagestyle{empty}
@@ -18,7 +19,9 @@
 \hfill \\
 \section{ Background }
 
-\paragraph{}
+\indent Radix sort is an integer sorting algorithm that avoids comparison operations in favor of using the integers as keys in a fixed order. In general it features performance of $O(k N)$ where $k$ is the bit-length, and $N$ is the number of integers.
+
+
 
 \section{ Optimizations }
 
