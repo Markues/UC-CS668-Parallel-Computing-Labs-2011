@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <cstdlib>
+#include <stdlib.h>
 #include <ctime>
+#include <time.h>
 
 #define N 4000
 
@@ -11,7 +13,7 @@ void printArray(int *a,int n)
 		printf("%d\t",a[i]);
 	}
 }
-   
+
 void radixSort(int *a,int n)
 {
 	int i,b[N],m=0,exp=1;
@@ -42,11 +44,18 @@ void radixSort(int *a,int n)
 
 int main()
 {
+	time_t start, end;
+	start = time(NULL);
+	if(start == (time_t)-1) {
+		fprintf(stderr, "Error: `time()'\n");
+		return 1;
+	}
+
 	int arr[N];
 
 	srand((unsigned)time(0)); 
 	for(int i=0; i<N; i++){ 
-		arr[i] = (rand()%100)+1; 
+		arr[i] = (rand()%4294967296)+1; 
 	} 
 
 	printf("\nORIGINAL ARRAY  : ");
@@ -56,6 +65,9 @@ int main()
            
     printf("\nSORTED ARRAY: ");
     printArray(&arr[0],N);
+
+	end = time(NULL);
+	printf("according to difftime(), slept for %f ms\n", difftime(end, start));
 
     return 0;
 }
